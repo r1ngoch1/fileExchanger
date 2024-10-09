@@ -1,4 +1,4 @@
-package ru.royal.fileExchanger.service;
+package ru.royal.fileExchanger.service.serviceInterface;
 
 import ru.royal.fileExchanger.entities.User;
 

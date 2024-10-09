@@ -1,4 +1,4 @@
-package ru.royal.fileExchanger;
+package ru.royal.fileExchanger.Dates;
 import ru.royal.fileExchanger.entities.User;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 
 
 @Component
-public class DateUser {
+public class dateUser {
     @Bean
     @Scope(value = BeanDefinition.SCOPE_SINGLETON)
     public List<User> userSource(){

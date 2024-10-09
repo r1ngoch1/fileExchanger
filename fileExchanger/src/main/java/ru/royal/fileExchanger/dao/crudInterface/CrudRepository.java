@@ -1,4 +1,4 @@
-package ru.royal.fileExchanger.dao;
+package ru.royal.fileExchanger.dao.crudInterface;
 
 public interface CrudRepository<T,ID> {
     void create(T entity);

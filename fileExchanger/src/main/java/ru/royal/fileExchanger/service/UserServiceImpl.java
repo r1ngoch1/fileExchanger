@@ -8,15 +8,16 @@ import java.time.LocalDateTime;
 
 import ru.royal.fileExchanger.dao.UserRepository;
 import ru.royal.fileExchanger.entities.User;
+import ru.royal.fileExchanger.service.serviceInterface.UserService;
 
 @Service
-public class UserImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -29,7 +30,6 @@ public class UserImpl implements UserService{
         user.setLogin(login);
         user.setPassword(password);
         user.setDateOfRegistration(LocalDateTime.now().toString());
-        user.setActive(true);
 
         userRepository.create(user);
     }
@@ -54,7 +54,7 @@ public class UserImpl implements UserService{
         user.setLogin(newLogin);
         user.setPassword(password);
         user.setDateOfRegistration(LocalDateTime.now().toString());
-        user.setActive(true);
+
 
         userRepository.update(user);
     }
@@ -68,7 +68,7 @@ public class UserImpl implements UserService{
         user.setLogin(login);
         user.setPassword(newPassword);
         user.setDateOfRegistration(LocalDateTime.now().toString());
-        user.setActive(true);
+
 
         userRepository.update(user);
     }
