@@ -1,20 +1,31 @@
 package ru.royal.fileExchanger.entities;
 
-import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String email;
-    private String login;
+    @Column(unique = true)
+    private String username;
+    @Column(name = "password_hash")
     private String password;
+    @Column(name = "created_at")
     private String dateOfRegistration;
+    public User() {
 
-    public Long getId() {
-        return id;
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    public User(String email, String username, String password) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -25,12 +36,12 @@ public class User {
         this.email = email;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -54,7 +65,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
-                ", login='" + login + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", dateOfRegistration='" + dateOfRegistration + '\'' +
                 '}';
