@@ -14,9 +14,9 @@ public class Download {
     private Link link;
     @ManyToOne
     private User user;
-    @Column(name = "download_ip")
+    @Column
     private String downloadIp;
-    @Column(name = "download_at")
+    @Column
     private Timestamp downloadAt;
 
 

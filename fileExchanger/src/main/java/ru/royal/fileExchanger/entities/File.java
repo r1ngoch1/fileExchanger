@@ -10,16 +10,15 @@ public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "file_name")
+    @Column
     private String fileName;
-    @Column(name = "file_size")
+    @Column
     private BigInteger fileSize;
-    @Column(name = "file_type")
+    @Column
     private String fileType;
-    @Column(name = "storage_path")
+    @Column
     private String storagePath;
-    @Column(name = "uploaded_at")
+    @Column
     private Timestamp uploadedAt;
     @ManyToOne
     private User user;
@@ -33,6 +32,14 @@ public class File {
         this.fileSize = fileSize;
         this.fileType = fileType;
         this.storagePath = storagePath;
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -82,5 +89,18 @@ public class File {
 
     public void setUploadedAt(Timestamp uploadedAt) {
         this.uploadedAt = uploadedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "id=" + id +
+                ", fileName='" + fileName + '\'' +
+                ", fileSize=" + fileSize +
+                ", fileType='" + fileType + '\'' +
+                ", storagePath='" + storagePath + '\'' +
+                ", uploadedAt=" + uploadedAt +
+                ", user=" + user +
+                '}';
     }
 }

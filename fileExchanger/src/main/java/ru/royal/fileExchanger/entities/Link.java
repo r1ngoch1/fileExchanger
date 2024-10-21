@@ -7,17 +7,17 @@ import java.sql.Timestamp;
 @Table(name = "links")
 public class Link {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     @ManyToOne
     private File file;
-    @Column(name = "link_hash")
+    @Column
     private String linkHash;
-    @Column(name = "expiration_date")
+    @Column
     private Timestamp expirationDate;
-    @Column(name = "created_at")
+    @Column
     private Timestamp createdAt;
-    @Column(name = "is_active")
+    @Column
     private Boolean isActive;
 
 
