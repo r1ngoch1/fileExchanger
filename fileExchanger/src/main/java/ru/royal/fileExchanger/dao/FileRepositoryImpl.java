@@ -16,6 +16,12 @@ public class FileRepositoryImpl implements FileRepositoryCustom{
         this.entityManager = entityManager;
     }
 
+    /**
+     *
+     *
+     * @param fileName
+     * @return список файлов найденных по названию файла
+     */
     @Override
     public List<File> findByFileName(String fileName) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -27,6 +33,11 @@ public class FileRepositoryImpl implements FileRepositoryCustom{
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
+    /**
+     *
+     * @param username
+     * @return возвращает список файлов у конкретного пользователя
+     */
     @Override
     public List<File> findByUsername(String username) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
