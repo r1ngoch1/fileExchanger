@@ -3,7 +3,9 @@ package ru.royal.fileExchanger.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -19,6 +21,13 @@ public class User {
     private String password;
     @Column
     private String dateOfRegistration;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column
+    private Set<Role> userRole = new HashSet<Role>();
+
     public User() {
 
     }
@@ -28,8 +37,18 @@ public class User {
         this.password = password;
     }
 
+
+
     public Long getId() {
         return id;
+    }
+
+    public Set<Role> getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(Set<Role> userRole) {
+        this.userRole = userRole;
     }
 
     public String getEmail() {

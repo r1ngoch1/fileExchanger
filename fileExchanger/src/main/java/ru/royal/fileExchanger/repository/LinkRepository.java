@@ -19,4 +19,12 @@ public interface LinkRepository extends CrudRepository<Link, Long> {
      */
     @Query("SELECT l from Link l join l.file f WHERE f.fileName = :fileName")
     List<Link> findByFileName(String fileName);
+
+    /**
+     *
+     * @param username
+     * @return возвращает список ссылок по по логину
+     */
+    @Query("SELECT l from Link l WHERE l.file.user.username = :username")
+    List<Link> findByUsername(String username);
 }

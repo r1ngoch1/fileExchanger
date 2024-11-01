@@ -18,6 +18,20 @@ public interface UserRepository extends CrudRepository<User,Long> {
      */
     User findByUsernameAndPassword(String username, String password);
 
+    /**
+     *
+     * @param username
+     * @return возвращает пользователя по логину
+     */
+    User findByUsername(String username);
+
+    /**
+     *
+     * @param username
+     * удаляет пользователя
+     */
+    void deleteByUsername(String username);
+
 
 
 }

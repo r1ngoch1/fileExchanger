@@ -11,6 +11,7 @@ import ru.royal.fileExchanger.repository.LinkRepository;
 
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import ru.royal.fileExchanger.repository.UserRepository;
 
 import java.util.List;
 
@@ -20,18 +21,30 @@ public class FileServiceImpl implements FileService{
 
     private final FileRepository fileRepository;
     private final LinkRepository linkRepository;
+    private final UserRepository userRepository;
+    private final LinkService linkService;
 
     @Autowired
-    public FileServiceImpl(FileRepository fileRepository, LinkRepository linkRepository) {
+    public FileServiceImpl(FileRepository fileRepository, LinkRepository linkRepository,
+                           UserRepository userRepository, LinkService linkService) {
         this.fileRepository = fileRepository;
         this.linkRepository = linkRepository;
+        this.userRepository = userRepository;
+        this.linkService = linkService;
     }
 
     @Override
     @Transactional
     public void deleteFile(String filename) {
-        List<Link> links = linkRepository.findByFileName(filename);
-        linkRepository.deleteAll(links);
+        linkService.deleteAllByFilename(filename);
         fileRepository.deleteByFileName(filename);
+    }
+
+
+    @Override
+    @Transactional
+    public void deleteFilesByUser(String username) {
+        linkService.deleteAllByUsername(username);
+        fileRepository.deleteAllByUser(userRepository.findByUsername(username));
     }
 }

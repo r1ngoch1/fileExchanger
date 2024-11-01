@@ -32,4 +32,12 @@ public interface FileRepository extends CrudRepository<File, Long> {
      */
     void deleteByFileName(String fileName);
 
+    /**
+     *
+     * @param user
+     *
+     * удаляет все файлы у пользователя
+     */
+    void deleteAllByUser(User user);
+
 }
