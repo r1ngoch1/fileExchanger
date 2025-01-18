@@ -23,7 +23,7 @@ public interface FileRepository extends CrudRepository<File, Long> {
      * @param username
      * @return список файлов у конкретного пользователя
      */
-    @Query("SELECT f from File f join f.user u WHERE u.username = :username")
+    @Query("SELECT f from File f join f.user u WHERE u.username = :username and f.isActive = true")
     List<File> findByUsername(@Param("username") String username);
 
     /**
@@ -39,5 +39,28 @@ public interface FileRepository extends CrudRepository<File, Long> {
      * удаляет все файлы у пользователя
      */
     void deleteAllByUser(User user);
+
+    /**
+     *
+     * @param id
+     *
+     * удаляет файл по его id
+     */
+
+    void deleteById(Long id);
+
+    /**
+     *
+     * @param id
+     *
+     * возвращает файл по его id
+     * @return file
+     */
+
+    File getFileById(Long id);
+
+
+    @Query("SELECT f FROM File f WHERE f.user = :user AND f.directory.id=0 AND f.isActive = true")
+    List<File> findAllByUserAndDirectoryIsNull(@Param("user") User user);
 
 }

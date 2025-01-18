@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пользователя</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .profile-info {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .profile-info p {
+            font-size: 16px;
+            color: #333;
+            margin: 5px 0;
+        }
+
+        .profile-info strong {
+            font-weight: bold;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Профиль пользователя</h1>
+
+    <div class="profile-info">
+        <h2>Информация о пользователе</h2>
+        <p><strong>Имя пользователя:</strong> <span th:text="${user.username}">Имя пользователя</span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}">Email</span></p>
+        <p><strong>Дата регистрации:</strong> <span th:text="${user.dateOfRegistration}">Дата регистрации</span></p>
+        <p><strong>Роли:</strong> <span th:text="${user.userRole}">Роли</span></p>
+    </div>
+
+    <!-- Кнопка редактирования профиля -->
+    <a href="/profile/edit" class="button">Редактировать профиль</a>
+</div>
+
+</body>
+</html>

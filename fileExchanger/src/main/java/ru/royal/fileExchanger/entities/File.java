@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+
+/**
+ *  класс представляющий сущность файл, который имеет путь до файла, название файла, размер файла
+ */
+
 @Entity
 @Table(name = "files")
 public class File {
@@ -13,26 +18,56 @@ public class File {
     @Column
     private String fileName;
     @Column
-    private BigInteger fileSize;
+    private Long fileSize;
     @Column
     private String fileType;
     @Column
     private String storagePath;
     @Column
     private Timestamp uploadedAt;
+    @Column
+    private boolean isActive;
     @ManyToOne
     private User user;
+    @ManyToOne
+    private Directory directory;
 
 
     public File() {
 
     }
-    public File(String fileName, BigInteger fileSize, String fileType, String storagePath, User user) {
+
+    public File(String fileName, User user) {
+        this.fileName = fileName;
+        this.user = user;
+    }
+
+    public File(String fileName, Long fileSize, String fileType, String storagePath, User user) {
         this.fileName = fileName;
         this.fileSize = fileSize;
         this.fileType = fileType;
         this.storagePath = storagePath;
         this.user = user;
+    }
+
+    public File(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Directory getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(Directory directory) {
+        this.directory = directory;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public User getUser() {
@@ -59,11 +94,11 @@ public class File {
         this.fileName = fileName;
     }
 
-    public BigInteger getFileSize() {
+    public long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(BigInteger fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 
@@ -103,4 +138,6 @@ public class File {
                 ", user=" + user +
                 '}';
     }
+
+
 }

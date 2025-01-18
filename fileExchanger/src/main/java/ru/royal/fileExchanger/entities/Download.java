@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+
+/**
+ * сущность скачанных файлов, после того как файл скачивается пользователем, то создается объект этой сущности
+ */
 @Entity
 @Table(name = "downloads")
 public class Download {
@@ -45,5 +49,19 @@ public class Download {
         this.downloadAt = downloadAt;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Link getLink() {
+        return link;
+    }
+
+    public void setLink(Link link) {
+        this.link = link;
+    }
 }

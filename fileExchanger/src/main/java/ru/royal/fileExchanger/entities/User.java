@@ -3,10 +3,14 @@ package ru.royal.fileExchanger.entities;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * сущность пользователь
+ */
 @Entity
 @Table(name = "users")
 public class User {
@@ -15,12 +19,20 @@ public class User {
     private Long id;
     @Column(unique = true)
     private String email;
+    @Column
+    private boolean emailVerified = false;
+
     @Column(unique = true)
     private String username;
     @Column
     private String password;
     @Column
     private String dateOfRegistration;
+    @Column
+    private String verificationToken;
+    @Column
+    private Timestamp tokenCreationDate;
+
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -45,6 +57,31 @@ public class User {
 
     public Set<Role> getUserRole() {
         return userRole;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public Timestamp getTokenCreationDate() {
+        return tokenCreationDate;
+    }
+
+    public void setTokenCreationDate(Timestamp tokenCreationDate) {
+        this.tokenCreationDate = tokenCreationDate;
     }
 
     public void setUserRole(Set<Role> userRole) {

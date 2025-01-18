@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,11 +21,22 @@ public class Config {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/registration","/login").permitAll()
-                        .requestMatchers("swaggeer-ui/index.html").hasRole("ADMIN")
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((auth) -> auth
+                .requestMatchers("/registration","/login","/forgot-password","/password/reset/**").permitAll()
+                        .requestMatchers("swagger-ui/index.html").hasRole("USER")
+                        .requestMatchers("/api/v1/files/**").hasRole("USER")
                 .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
+                .formLogin( form -> form
+                    .loginPage("/login")
+                        .defaultSuccessUrl("/home",true)
+                    .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll());
         return httpSecurity.build();
     }
 }

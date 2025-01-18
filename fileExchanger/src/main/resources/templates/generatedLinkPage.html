@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Сгенерированная ссылка</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #333;
+    }
+
+    .link-box {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .link-box input {
+      border: none;
+      background: none;
+      width: 100%;
+      color: #333;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .copy-button {
+      padding: 8px 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .copy-button:hover {
+      background: #0056b3;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      text-decoration: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .back-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Ссылка успешно создана!</h1>
+  <div class="link-box">
+    <input type="text" id="generatedLink" th:value="${generatedLink}" readonly>
+    <button class="copy-button" onclick="copyToClipboard()">Скопировать</button>
+  </div>
+  <a href="/home" class="back-button">Вернуться на главную</a>
+</div>
+
+<script>
+  function copyToClipboard() {
+    const linkInput = document.getElementById("generatedLink");
+    linkInput.select();
+    linkInput.setSelectionRange(0, 99999); // Для мобильных устройств
+    document.execCommand("copy");
+    alert("Ссылка скопирована: " + linkInput.value);
+  }
+</script>
+
+</body>
+</html>

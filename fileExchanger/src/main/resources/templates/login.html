@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Log In</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,7 +16,7 @@
             height: 100vh;
         }
 
-        .registration-container {
+        .login-container {
             width: 100%;
             max-width: 400px;
             background-color: #fff;
@@ -33,14 +32,14 @@
             font-size: 24px;
         }
 
-        .form-group {
+        .alert {
             margin-bottom: 15px;
-            text-align: left;
+            color: #d9534f;
+            font-size: 14px;
         }
 
-        label {
-            font-size: 16px;
-            color: #555;
+        .form-group {
+            margin-bottom: 15px;
         }
 
         input[type="text"],
@@ -51,48 +50,58 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             box-sizing: border-box;
-            margin-top: 5px;
         }
 
-        .register-button {
+        .login-button {
             width: 100%;
             padding: 10px;
             font-size: 16px;
-            background-color: #28a745;
+            background-color: #007bff;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        .register-button:hover {
-            background-color: #218838;
+        .login-button:hover {
+            background-color: #0056b3;
         }
 
-        .message {
-            margin-bottom: 15px;
-            color: #d9534f;
+        .secondary-buttons {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .secondary-button {
             font-size: 14px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .secondary-button:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-<div class="registration-container">
-    <h1>Register</h1>
-    <div th:if="${message}" class="message" th:text="${message}"></div>
-    <form th:action="@{/registration}" method="post">
+<div class="login-container">
+    <h1>Log In</h1>
+    <div th:if="${param.error}" class="alert">Invalid username and password.</div>
+    <div th:if="${param.logout}" class="alert">You have been logged out.</div>
+    <form th:action="@{/login}" method="post">
         <div class="form-group">
-            <label>User Name:
-                <input type="text" name="username" required/>
-            </label>
+            <input type="text" name="username" placeholder="Username" required/>
         </div>
         <div class="form-group">
-            <label>Password:
-                <input type="password" name="password" required/>
-            </label>
+            <input type="password" name="password" placeholder="Password" required/>
         </div>
-        <button type="submit" class="register-button">Register</button>
+        <button type="submit" class="login-button">Log in</button>
     </form>
+    <div class="secondary-buttons">
+        <a th:href="@{/registration}" class="secondary-button">Register</a>
+        <a th:href="@{/forgot-password}" class="secondary-button">Forgot Password?</a>
+    </div>
 </div>
 </body>
 </html>

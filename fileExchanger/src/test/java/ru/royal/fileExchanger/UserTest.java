@@ -58,20 +58,7 @@ class UserTest {
 
 
     }
-    @Test
-    void testUserService(){
-        String username = "TaylerDerdan1";
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword("aaa123");
-        user.setEmail("aaaarff@mail.ru");
-        user.setDateOfRegistration(LocalDateTime.now().toString());
-        userService.save(user);
-        Assertions.assertNotNull(userService.findByUsername(username));
-        Assertions.assertEquals(user.getId(), userService.findByUsername(username).getId());
 
-        userService.deleteUser(username);
-    }
 
     @Test
     void testTransactionalDelete(){

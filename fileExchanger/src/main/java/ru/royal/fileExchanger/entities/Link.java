@@ -3,6 +3,10 @@ package ru.royal.fileExchanger.entities;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+
+/**
+ * сущность ссылок, для каждого файла можно создать объект ссылку для скачивания
+ */
 @Entity
 @Table(name = "links")
 public class Link {

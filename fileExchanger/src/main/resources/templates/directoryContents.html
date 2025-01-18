@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой профиль</title>
+    <title>Содержимое директории</title>
     <style>
         /* Общие стили */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f9f9f9;
             margin: 0;
             padding: 0;
@@ -19,17 +19,17 @@
 
         .container {
             width: 90%;
-            max-width: 800px;
+            max-width: 900px;
             background-color: #ffffff;
             margin: 20px 0;
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
         }
 
         h1, h2 {
-            color: #333;
+            color: #444;
+            margin-bottom: 15px;
         }
 
         h1 {
@@ -45,92 +45,109 @@
         .list {
             list-style-type: none;
             padding: 0;
-            margin: 20px 0;
+            margin: 0;
         }
 
-        .directory-item, .file-item {
+        .item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             border-radius: 8px;
             background: #f4f4f4;
-            border: 1px solid #ddd;
+            border: 1px solid #e0e0e0;
         }
 
-        .directory-item:hover, .file-item:hover {
+        .item:hover {
             background: #eef5ff;
             border-color: #d0e0ff;
         }
 
-        .file-actions {
+        .actions {
             display: flex;
             gap: 10px;
         }
 
-        .button, .action-button {
+        .button {
             padding: 8px 15px;
             font-size: 14px;
             text-align: center;
             border: none;
             border-radius: 5px;
             background-color: #007bff;
-            color: white;
+            color: #ffffff;
             text-decoration: none;
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
 
-        .button:hover, .action-button:hover {
+        .button:hover {
             background-color: #0056b3;
         }
 
-        .delete-button {
+        .action-button.delete-button {
             background-color: #dc3545;
         }
 
-        .delete-button:hover {
+        .action-button.delete-button:hover {
             background-color: #b02a37;
         }
 
-        .generate-link-button {
+        .action-button.generate-link-button {
             background-color: #28a745;
         }
 
-        .generate-link-button:hover {
+        .action-button.generate-link-button:hover {
             background-color: #218838;
         }
 
-        .navigation-button {
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            flex: 1;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        a.button {
             margin-top: 20px;
             display: inline-block;
         }
     </style>
 </head>
-
 <body>
 <div class="container">
-    <h1>Добро пожаловать, <span th:text="${username}">Пользователь</span>!</h1>
+    <h1>Содержимое директории: <span th:text="${directory.name}">Имя директории</span></h1>
 
-    <!-- Список директорий -->
-    <h2>Ваши директории:</h2>
+    <!-- Поддиректории -->
+    <h2>Поддиректории:</h2>
     <ul class="list">
-        <li th:each="dir : ${directories}" class="directory-item">
-            <span th:text="${dir.name}">Имя директории</span>
-            <a th:href="@{/contents/{directoryId}(directoryId=${dir.id})}" class="button">Открыть</a>
+        <li th:each="dir : ${subdirectories}" class="item">
+            <span th:text="${dir.name}">Имя поддиректории</span>
+            <div class="actions">
+                <a th:href="@{/contents/{directoryId}(directoryId=${dir.id})}" class="button">Открыть</a>
+            </div>
         </li>
     </ul>
 
-    <!-- Список файлов пользователя -->
-    <h2>Ваши файлы:</h2>
+    <!-- Файлы -->
+    <h2>Файлы:</h2>
     <ul class="list">
-        <li th:each="file : ${files}" class="file-item">
+        <li th:each="file : ${files}" class="item">
             <span>
                 <strong th:text="${file.fileName}">Имя файла</strong> —
                 <span th:text="${file.fileSize} + ' MB'">Размер файла</span>
             </span>
-            <div class="file-actions">
+            <div class="actions">
                 <!-- Удалить файл -->
                 <form th:action="@{/deleteFile/{fileId}(fileId=${file.id})}" method="post">
                     <input type="hidden" name="_method" value="DELETE">
@@ -144,11 +161,17 @@
         </li>
     </ul>
 
-    <!-- Кнопки навигации -->
-    <a href="/profile" class="navigation-button button">Профиль</a>
-    <a href="/home/upload" class="navigation-button button">Загрузить файл</a>
-    <a href="/home/create" class="navigation-button button">Создать директорию</a>
-    <a th:href="@{/logout}" class="navigation-button button">Выйти</a>
+    <!-- Загрузка файла -->
+    <a th:href="@{/contents/{directoryId}/upload(directoryId=${directory.id})}" class="button">Загрузить файл</a>
+
+    <!-- Создать поддиректорию -->
+    <h2>Создать поддиректорию:</h2>
+    <form th:action="@{/contents/{directoryId}/create(directoryId=${directory.id})}" method="post">
+        <input type="text" name="name" placeholder="Имя поддиректории" required>
+        <button class="button" type="submit">Создать</button>
+    </form>
+
+    <a href="/home" class="button">Назад в корневую директорию</a>
 </div>
 </body>
 </html>

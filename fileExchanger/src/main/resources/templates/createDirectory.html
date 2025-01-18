@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/home/create}" method="post">
+    <label for="directoryName">Имя директории:</label>
+    <input type="text" id="directoryName" name="name" required>
+
+    <button type="submit" class="navigation-button">Создать</button>
+</form>
+
+<a href="/home" class="back-button">Назад</a>
+
+</body>
+</html>
