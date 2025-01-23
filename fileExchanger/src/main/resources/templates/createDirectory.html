@@ -2,17 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Создать директорию</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background-color: #ffffff;
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1, label {
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 16px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .navigation-button, .back-button {
+            padding: 10px 20px;
+            font-size: 14px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .navigation-button:hover, .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button {
+            background-color: #6c757d;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
 </head>
 <body>
-<form th:action="@{/home/create}" method="post">
-    <label for="directoryName">Имя директории:</label>
-    <input type="text" id="directoryName" name="name" required>
-
-    <button type="submit" class="navigation-button">Создать</button>
-</form>
-
-<a href="/home" class="back-button">Назад</a>
-
+<div class="container">
+    <h1>Создать новую директорию</h1>
+    <form th:action="@{/home/create}" method="post">
+        <label for="directoryName">Имя директории:</label>
+        <input type="text" id="directoryName" name="name" required>
+        <button type="submit" class="navigation-button">Создать</button>
+    </form>
+    <a href="/home" class="back-button">Назад</a>
+</div>
 </body>
 </html>

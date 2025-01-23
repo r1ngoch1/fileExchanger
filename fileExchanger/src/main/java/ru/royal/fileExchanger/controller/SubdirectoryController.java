@@ -1,16 +1,23 @@
 package ru.royal.fileExchanger.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.royal.fileExchanger.entities.Directory;
 import ru.royal.fileExchanger.entities.File;
 import ru.royal.fileExchanger.service.DirectoryService;
-
-import org.springframework.web.bind.annotation.*;
 import ru.royal.fileExchanger.service.FileService;
+
+
+
+
+
 
 import java.io.IOException;
 import java.util.List;
@@ -65,6 +72,45 @@ public class SubdirectoryController {
         fileService.uploadFile(file, directoryId);
         return "redirect:/contents/" + directoryId; // Возвращаемся к содержимому директории
     }
+
+    @DeleteMapping("/deleteDirectory/{directoryId}")
+    public String deleteDirectory(@PathVariable("directoryId") Long directoryId) {
+        try {
+            directoryService.deleteDirectory(directoryId);
+        } catch (Exception e) {
+            // Обработка ошибок
+            System.err.println("Ошибка при удалении директории: " + e.getMessage());
+        }
+        return "redirect:/home";  // Перенаправляем на главную страницу
+    }
+
+
+    @GetMapping("/download/zip/{directoryId}")
+    public ResponseEntity<Resource> downloadDirectoryAsZip(@PathVariable Long directoryId) throws IOException {
+        // Создаем путь к временной директории
+        String tempDir = System.getProperty("java.io.tmpdir");
+        String outputZipPath = tempDir + "/directory_" + directoryId + ".zip";
+
+        // Создаем ZIP-архив
+        directoryService.downloadDirectoryAsZip(directoryId, outputZipPath);
+
+        // Читаем ZIP-архив как ресурс
+        java.io.File zipFile = new java.io.File(outputZipPath);
+        if (!zipFile.exists()) {
+            throw new RuntimeException("Файл архива не найден: " + outputZipPath);
+        }
+
+        Resource resource = new org.springframework.core.io.FileSystemResource(zipFile);
+
+        // Формируем заголовки для скачивания файла
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipFile.getName() + "\"")
+                .contentLength(zipFile.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+
+
 
 
 }
