@@ -171,10 +171,6 @@ public class FileServiceImpl implements FileService{
             System.err.println("Ошибка при удалении файла из S3: " + s3Key + ", " + e.getMessage());
         }
 
-        // Удаляем связанные ссылки
-        List<Link> link = linkRepository.findByFileId(file.getId());
-
-
         file.setActive(false);
         linkService.updateAllActiveByFile(file);
         // Удаляем файл из базы данных

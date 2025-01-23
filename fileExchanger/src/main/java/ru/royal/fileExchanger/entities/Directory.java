@@ -28,7 +28,11 @@ public class Directory {
     private List<Directory> subdirectories; // Поддиректории
 
     @Column(nullable = false)
-    private String s3Path; // Префикс директории в S3
+    private String s3Path;
+
+    @Column
+    private boolean isActive;
+    // Префикс директории в S3
 
 
     public Long getId() {
@@ -53,6 +57,14 @@ public class Directory {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public Directory getParentDirectory() {

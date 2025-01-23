@@ -19,7 +19,7 @@ public interface DirectoryRepository extends CrudRepository<Directory, Long> {
     @Query("select f from File f where f.directory.id = :directoryId and f.isActive=true")
     List<File> findAllByDirectoryId(Long directoryId);
 
-    @Query("select d.subdirectories from Directory d where d.id = :directoryId")
+    @Query("select d.subdirectories from Directory d where d.id = :directoryId and d.isActive = true")
     List<Directory> findSubdirectoriesByDirectoryId(Long directoryId);
 
     @Query("SELECT DISTINCT d FROM Directory d " +
@@ -29,7 +29,7 @@ public interface DirectoryRepository extends CrudRepository<Directory, Long> {
 
     @Query("SELECT DISTINCT d FROM Directory d " +
             "LEFT JOIN d.files f " +
-            "WHERE d.user = :user and d.parentDirectory.id =0")
+            "WHERE d.user = :user and d.parentDirectory.id =0 and d.isActive = true")
     List<Directory> findRootDirByDirectoryId(User user);
 
     Optional<Directory> findById(Long id);

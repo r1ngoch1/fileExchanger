@@ -111,14 +111,24 @@
 
 <body>
 <div class="container">
-    <h1>Добро пожаловать, <span th:text="${username}">Пользователь</span>!</h1>
-
     <!-- Список директорий -->
     <h2>Ваши директории:</h2>
     <ul class="list">
         <li th:each="dir : ${directories}" class="directory-item">
             <span th:text="${dir.name}">Имя директории</span>
-            <a th:href="@{/contents/{directoryId}(directoryId=${dir.id})}" class="button">Открыть</a>
+            <div class="file-actions">
+                <!-- Удалить директорию -->
+                <form th:action="@{/contents/deleteDirectory/{directoryId}(directoryId=${dir.id})}" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="action-button delete-button">Удалить</button>
+                </form>
+                <a th:href="@{/contents/{directoryId}(directoryId=${dir.id})}" class="action-button">Открыть</a>
+                <!-- Скачать архив директории -->
+                <a th:href="@{/contents/download/zip/{directoryId}(directoryId=${dir.id})}"
+                   class="action-button generate-link-button">
+                    Скачать архив
+                </a>
+            </div>
         </li>
     </ul>
 

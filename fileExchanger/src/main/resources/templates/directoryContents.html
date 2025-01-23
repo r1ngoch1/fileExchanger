@@ -32,16 +32,6 @@
             margin-bottom: 15px;
         }
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            font-size: 20px;
-            margin-top: 30px;
-        }
-
         .list {
             list-style-type: none;
             padding: 0;
@@ -67,47 +57,67 @@
         .actions {
             display: flex;
             gap: 10px;
+            align-items: center; /* Выровнять кнопки по центру */
         }
 
         .button {
-            padding: 8px 15px;
+            display: inline-block;
+            padding: 10px 20px;
             font-size: 14px;
-            text-align: center;
             border: none;
             border-radius: 5px;
-            background-color: #007bff;
-            color: #ffffff;
+            text-align: center;
             text-decoration: none;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: #fff;
         }
 
         .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button.primary {
+            background-color: #007bff;
+        }
+
+        .button.primary:hover {
             background-color: #0056b3;
         }
 
-        .action-button.delete-button {
+        .button.secondary {
+            background-color: #6c757d;
+        }
+
+        .button.secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .button.danger {
             background-color: #dc3545;
         }
 
-        .action-button.delete-button:hover {
+        .button.danger:hover {
             background-color: #b02a37;
         }
 
-        .action-button.generate-link-button {
+        .button.success {
             background-color: #28a745;
         }
 
-        .action-button.generate-link-button:hover {
+        .button.success:hover {
             background-color: #218838;
         }
 
         input[type="text"] {
-            padding: 8px;
+            padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            margin-right: 10px;
             flex: 1;
         }
 
@@ -120,7 +130,6 @@
 
         a.button {
             margin-top: 20px;
-            display: inline-block;
         }
     </style>
 </head>
@@ -134,10 +143,16 @@
         <li th:each="dir : ${subdirectories}" class="item">
             <span th:text="${dir.name}">Имя поддиректории</span>
             <div class="actions">
-                <a th:href="@{/contents/{directoryId}(directoryId=${dir.id})}" class="button">Открыть</a>
+                <a th:href="@{/contents/{directoryId}(directoryId=${dir.id})}" class="button primary">Открыть</a>
+                <form th:action="@{/contents/deleteDirectory/{directoryId}(directoryId=${dir.id})}" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="button danger">Удалить</button>
+                </form>
             </div>
         </li>
     </ul>
+
+    <p th:if="${#lists.isEmpty(subdirectories)}" style="color: #777;">Нет поддиректорий.</p>
 
     <!-- Файлы -->
     <h2>Файлы:</h2>
@@ -148,30 +163,35 @@
                 <span th:text="${file.fileSize} + ' MB'">Размер файла</span>
             </span>
             <div class="actions">
-                <!-- Удалить файл -->
                 <form th:action="@{/deleteFile/{fileId}(fileId=${file.id})}" method="post">
                     <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="action-button delete-button">Удалить</button>
+                    <button type="submit" class="button danger">Удалить</button>
                 </form>
-                <!-- Сгенерировать ссылку -->
                 <form th:action="@{/generateLink/{fileId}(fileId=${file.id})}" method="post">
-                    <button type="submit" class="action-button generate-link-button">Сгенерировать ссылку</button>
+                    <button type="submit" class="button success">Сгенерировать ссылку</button>
                 </form>
             </div>
         </li>
     </ul>
 
+    <p th:if="${#lists.isEmpty(files)}" style="color: #777;">Нет файлов в текущей директории.</p>
+
     <!-- Загрузка файла -->
-    <a th:href="@{/contents/{directoryId}/upload(directoryId=${directory.id})}" class="button">Загрузить файл</a>
+    <a th:href="@{/contents/{directoryId}/upload(directoryId=${directory.id})}" class="button primary">Загрузить файл</a>
 
     <!-- Создать поддиректорию -->
     <h2>Создать поддиректорию:</h2>
     <form th:action="@{/contents/{directoryId}/create(directoryId=${directory.id})}" method="post">
         <input type="text" name="name" placeholder="Имя поддиректории" required>
-        <button class="button" type="submit">Создать</button>
+        <button class="button primary" type="submit">Создать</button>
     </form>
 
-    <a href="/home" class="button">Назад в корневую директорию</a>
+    <!-- Генерация ссылки для скачивания всех файлов в архиве -->
+    <form th:action="@{/contents/{directoryId}/downloadAll(directoryId=${directory.id})}" method="post">
+        <button type="submit" class="button secondary">Скачать все файлы (архив)</button>
+    </form>
+
+    <a href="/home" class="button secondary">На главную страницу</a>
 </div>
 </body>
 </html>
