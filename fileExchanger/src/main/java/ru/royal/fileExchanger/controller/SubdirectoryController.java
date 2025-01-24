@@ -85,30 +85,7 @@ public class SubdirectoryController {
     }
 
 
-    @GetMapping("/download/zip/{directoryId}")
-    public ResponseEntity<Resource> downloadDirectoryAsZip(@PathVariable Long directoryId) throws IOException {
-        // Создаем путь к временной директории
-        String tempDir = System.getProperty("java.io.tmpdir");
-        String outputZipPath = tempDir + "/directory_" + directoryId + ".zip";
 
-        // Создаем ZIP-архив
-        directoryService.downloadDirectoryAsZip(directoryId, outputZipPath);
-
-        // Читаем ZIP-архив как ресурс
-        java.io.File zipFile = new java.io.File(outputZipPath);
-        if (!zipFile.exists()) {
-            throw new RuntimeException("Файл архива не найден: " + outputZipPath);
-        }
-
-        Resource resource = new org.springframework.core.io.FileSystemResource(zipFile);
-
-        // Формируем заголовки для скачивания файла
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipFile.getName() + "\"")
-                .contentLength(zipFile.length())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
-    }
 
 
 

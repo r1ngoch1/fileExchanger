@@ -33,41 +33,20 @@ public class LinkController {
 
     @PostMapping("/generateLink/{fileId}")
     public String generateLink(@PathVariable Long fileId, Model model) {
-        Link link = linkService.createLink(fileId, 1);
-        String generatedLink = "/download/" + link.getLinkHash(); // Формируем ссылку
+        Link link = linkService.createLink(fileId, 1,false);
+        String generatedLink = "/download/" + link.getLinkHash();
+        model.addAttribute("generatedLink", generatedLink);
+        return "generatedLinkPage";
+    }
 
-        model.addAttribute("generatedLink", generatedLink); // Добавляем в модель
-
-        // Возвращаем название шаблона
+    @PostMapping("/generateLinkDirectory/{directoryId}")
+    public String generateLinkForDirectory(@PathVariable Long directoryId, Model model) {
+        Link link = linkService.createLink(directoryId, 1, true);
+        String generatedLink = "/downloadDirectory/" + link.getLinkHash();
+        model.addAttribute("generatedLink", generatedLink);
         return "generatedLinkPage";
     }
 
 
-    @GetMapping("/download/{hash}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String hash) {
-        String fileKey = linkService.getFileKeyByHash(hash); // Пример метода в LinkService
-
-        // Загружаем файл через S3Service
-        Resource fileResource = fileService.downloadFile(fileKey);
-        File file = linkService.getFileByLinkHash(hash);
-        downloadService.saveDownload(linkService.getLinkByHash(hash));
-
-        String fileName = file.getFileName();
-        String encodedFileName = UriUtils.encodePath(fileName, StandardCharsets.UTF_8);
-
-        HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFileName + "\"");
-        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        header.add("Pragma", "no-cache");
-        header.add("Expires", "0");
-
-        // Возвращаем файл пользователю
-        return ResponseEntity.ok()
-                .headers(header)
-                .contentLength(file.getFileSize())
-                .contentType(MediaType.parseMediaType(getContentType(file.getFileType())))
-                .body(fileResource);
-
-    }
 
 }

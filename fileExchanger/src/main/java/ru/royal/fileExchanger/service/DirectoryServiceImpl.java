@@ -11,9 +11,11 @@ import ru.royal.fileExchanger.entities.Link;
 import ru.royal.fileExchanger.entities.User;
 import ru.royal.fileExchanger.repository.DirectoryRepository;
 import ru.royal.fileExchanger.repository.FileRepository;
+import ru.royal.fileExchanger.repository.LinkRepository;
 import ru.royal.fileExchanger.repository.UserRepository;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.*;
 
@@ -33,17 +35,19 @@ public class DirectoryServiceImpl implements DirectoryService {
     private final SecurityUtils securityUtils;
     private final FileRepository fileRepository;
     private final S3Client s3Client;
+    private final LinkRepository linkRepository;
 
     private final String bucketName = "fileexchanger";
 
 
     @Autowired
     public DirectoryServiceImpl(DirectoryRepository directoryRepository, SecurityUtils securityUtils, FileRepository fileRepository
-    , S3Client s3Client) {
+    , S3Client s3Client, LinkRepository linkRepository) {
         this.directoryRepository = directoryRepository;
         this.securityUtils = securityUtils;
         this.fileRepository = fileRepository;
         this.s3Client = s3Client;
+        this.linkRepository = linkRepository;
     }
 
     @Override
@@ -95,7 +99,7 @@ public class DirectoryServiceImpl implements DirectoryService {
     @Override
     public List<Directory> getRootDirectoriesByUser() {
         User currentUser = securityUtils.getCurrentUser();
-        return directoryRepository.findRootDirByDirectoryId(currentUser);
+        return directoryRepository.findRootDirectories(currentUser);
     }
 
     @Override
@@ -130,6 +134,8 @@ public class DirectoryServiceImpl implements DirectoryService {
 
         List<File> files = directory.getFiles();
         for (File file : files) fileRepository.delete(file);
+        List<Link> links = directoryRepository.findLinksByDirectoryId(directoryId);
+        for (Link link : links) linkRepository.delete(link);
 
         directory.setActive(false);
         directoryRepository.save(directory);
@@ -137,13 +143,13 @@ public class DirectoryServiceImpl implements DirectoryService {
     }
 
     @Override
-    public void downloadDirectoryAsZip(Long directoryId, String outputZipPath) throws IOException {
-        Directory directory = directoryRepository.findById(directoryId)
-                .orElseThrow(() -> new RuntimeException("Директория не найдена" + directoryId));
+    public void downloadDirectoryAsZip(String linkHash, String outputZipPath) throws IOException {
+        Directory directory = linkRepository.findDirectoryByLinkHash(linkHash)
+                .orElseThrow(() -> new RuntimeException("Директория не найдена" + linkHash));
         String directoryPath = directory.getS3Path();
 
         String tempDir = System.getProperty("java.io.tmpdir");
-        outputZipPath = tempDir + "/directory_" + directoryId + ".zip";
+        outputZipPath = tempDir + "/directory_" + directory.getName() + ".zip";
 
         try (FileOutputStream fos = new FileOutputStream(outputZipPath);
              ZipOutputStream zipOut = new ZipOutputStream(fos)) {

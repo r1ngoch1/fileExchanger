@@ -28,14 +28,8 @@ public interface LinkService {
      */
     void deleteByFileId(Long fileId);
 
-    /**
-     *
-     * @param fileId
-     * @param expirationInHours
-     * создает ссылку для скачивания файла по id файла, а также время действительности ссылки
-     * @return
-     */
-    Link createLink(Long fileId, int expirationInHours);
+
+    Link createLink(Long objectId, int expirationInHours, boolean isDirectory);
 
     /**
      *

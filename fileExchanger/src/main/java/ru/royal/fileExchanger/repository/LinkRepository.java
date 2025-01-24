@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
+import ru.royal.fileExchanger.entities.Directory;
 import ru.royal.fileExchanger.entities.File;
 import ru.royal.fileExchanger.entities.Link;
 import ru.royal.fileExchanger.entities.User;
@@ -61,8 +62,13 @@ public interface LinkRepository extends CrudRepository<Link, Long> {
     @Query("select l.file from Link l WHERE l.linkHash = :linkHash")
     File findFileByLinkHash(@Param("linkHash") String linkHash);
 
+    @Query("select l.directory from Link l where l.linkHash = :linkHash")
+    Optional<Directory> findDirectoryByLinkHash(String linkHash);
+
     @Query("select l.file.user from Link l where l.id = :id")
     Optional<User> findUserByLinkId(@Param("id") Long id);
+
+
 
 
 

@@ -20,7 +20,7 @@ public interface DirectoryService {
     List<Directory> getRootDirectoriesByUser();
 
     void deleteDirectory(Long directoryId);
-    void downloadDirectoryAsZip(Long directoryId, String outputZipPath) throws IOException;
+    void downloadDirectoryAsZip(String linkHash, String outputZipPath) throws IOException ;
 
 
 }

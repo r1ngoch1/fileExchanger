@@ -2,56 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Сгенерированная ссылка</title>
+  <title>Ссылка сгенерирована</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      background-color: #f9f9f9;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
     }
 
     .container {
-      text-align: center;
-      background: #fff;
-      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      background-color: #ffffff;
+      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      max-width: 500px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
     }
 
     h1 {
-      font-size: 24px;
       color: #333;
+      margin-bottom: 20px;
     }
 
     .link-box {
       margin-top: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
       padding: 10px;
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
       border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .link-box input {
+      width: 100%;
+      padding: 8px;
       border: none;
       background: none;
-      width: 100%;
-      color: #333;
-      font-size: 16px;
+      font-size: 14px;
+      color: #555;
       outline: none;
     }
 
     .copy-button {
       padding: 8px 15px;
-      background: #007bff;
+      font-size: 14px;
+      background-color: #007bff;
       color: white;
       border: none;
       border-radius: 5px;
@@ -60,46 +62,27 @@
     }
 
     .copy-button:hover {
-      background: #0056b3;
-    }
-
-    .back-button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      color: #fff;
-      background-color: #007bff;
-      text-decoration: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .back-button:hover {
       background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-
 <div class="container">
   <h1>Ссылка успешно создана!</h1>
   <div class="link-box">
-    <input type="text" id="generatedLink" th:value="${generatedLink}" readonly>
-    <button class="copy-button" onclick="copyToClipboard()">Скопировать</button>
+    <input type="text" th:value="@{${generatedLink}}" readonly>
+    <button class="copy-button" onclick="copyToClipboard()">Копировать</button>
   </div>
-  <a href="/home" class="back-button">Вернуться на главную</a>
+  <a href="/home" class="button" style="margin-top: 20px; display: inline-block;">Вернуться</a>
 </div>
 
 <script>
   function copyToClipboard() {
-    const linkInput = document.getElementById("generatedLink");
-    linkInput.select();
-    linkInput.setSelectionRange(0, 99999); // Для мобильных устройств
-    document.execCommand("copy");
-    alert("Ссылка скопирована: " + linkInput.value);
+    const input = document.querySelector('.link-box input');
+    input.select();
+    document.execCommand('copy');
+    alert('Ссылка скопирована!');
   }
 </script>
-
 </body>
 </html>

@@ -137,21 +137,27 @@
 <div class="container">
     <h1>Содержимое директории: <span th:text="${directory.name}">Имя директории</span></h1>
 
-    <!-- Поддиректории -->
     <h2>Поддиректории:</h2>
     <ul class="list">
         <li th:each="dir : ${subdirectories}" class="item">
             <span th:text="${dir.name}">Имя поддиректории</span>
             <div class="actions">
+                <!-- Кнопка "Открыть" -->
                 <a th:href="@{/contents/{directoryId}(directoryId=${dir.id})}" class="button primary">Открыть</a>
+
+                <!-- Удалить директорию -->
                 <form th:action="@{/contents/deleteDirectory/{directoryId}(directoryId=${dir.id})}" method="post">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="submit" class="button danger">Удалить</button>
                 </form>
+
+                <!-- Сгенерировать ссылку для директории -->
+                <form th:action="@{/generateLinkDirectory/{directoryId}(directoryId=${dir.id})}" method="post">
+                    <button type="submit" class="button success">Сгенерировать ссылку</button>
+                </form>
             </div>
         </li>
     </ul>
-
     <p th:if="${#lists.isEmpty(subdirectories)}" style="color: #777;">Нет поддиректорий.</p>
 
     <!-- Файлы -->
@@ -186,10 +192,6 @@
         <button class="button primary" type="submit">Создать</button>
     </form>
 
-    <!-- Генерация ссылки для скачивания всех файлов в архиве -->
-    <form th:action="@{/contents/{directoryId}/downloadAll(directoryId=${directory.id})}" method="post">
-        <button type="submit" class="button secondary">Скачать все файлы (архив)</button>
-    </form>
 
     <a href="/home" class="button secondary">На главную страницу</a>
 </div>

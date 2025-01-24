@@ -2,8 +2,10 @@ package ru.royal.fileExchanger.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.royal.fileExchanger.entities.Directory;
 import ru.royal.fileExchanger.entities.File;
 import ru.royal.fileExchanger.entities.Link;
+import ru.royal.fileExchanger.repository.DirectoryRepository;
 import ru.royal.fileExchanger.repository.FileRepository;
 import ru.royal.fileExchanger.repository.LinkRepository;
 
@@ -17,11 +19,13 @@ import java.util.UUID;
 public class LinkServiceImpl implements LinkService{
     private final LinkRepository linkRepository;
     private final FileRepository fileRepository;
+    private final DirectoryRepository directoryRepository;
 
     @Autowired
-    public LinkServiceImpl(LinkRepository linkRepository,FileRepository fileRepository) {
+    public LinkServiceImpl(LinkRepository linkRepository,FileRepository fileRepository,DirectoryRepository directoryRepository) {
         this.linkRepository = linkRepository;
         this.fileRepository = fileRepository;
+        this.directoryRepository = directoryRepository;
     }
 
     @Override
@@ -57,26 +61,31 @@ public class LinkServiceImpl implements LinkService{
     }
 
     @Override
-    public Link createLink(Long fileId, int expirationInHours) {
-        File file = fileRepository.findById(fileId)
-                .orElseThrow(() -> new IllegalArgumentException("Файл не найден"));
-
-        // Генерация уникального хеша
+    public Link createLink(Long objectId, int expirationInHours, boolean isDirectory) {
+        Timestamp expirationDate = Timestamp.from(Instant.now().plusSeconds(expirationInHours * 3600L));
         String linkHash = UUID.randomUUID().toString();
 
-        // Создаем дату истечения ссылки
-        Timestamp expirationDate = Timestamp.from(Instant.now().plusSeconds(expirationInHours * 3600L));
-
-        // Создаем новую ссылку
         Link link = new Link();
-        link.setFile(file);
         link.setLinkHash(linkHash);
         link.setExpirationDate(expirationDate);
         link.setCreatedAt(Timestamp.from(Instant.now()));
         link.setIsActive(true);
 
+        if (isDirectory) {
+            // Для директории
+            Directory directory = directoryRepository.findById(objectId)
+                    .orElseThrow(() -> new IllegalArgumentException("Директория не найдена"));
+            link.setDirectory(directory);
+        } else {
+            // Для файла
+            File file = fileRepository.findById(objectId)
+                    .orElseThrow(() -> new IllegalArgumentException("Файл не найден"));
+            link.setFile(file);
+        }
+
         return linkRepository.save(link);
     }
+
     @Override
     public File getFileByHash(String hash) {
         Link link = linkRepository.findLinkByLinkHash(hash);

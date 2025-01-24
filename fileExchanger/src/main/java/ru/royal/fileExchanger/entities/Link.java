@@ -15,6 +15,8 @@ public class Link {
     private Long id;
     @ManyToOne
     private File file;
+    @ManyToOne
+    private Directory directory;
     @Column
     private String linkHash;
     @Column
@@ -39,6 +41,14 @@ public class Link {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public Directory getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(Directory directory) {
+        this.directory = directory;
     }
 
     public String getLinkHash() {

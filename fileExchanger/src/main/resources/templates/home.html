@@ -123,11 +123,10 @@
                     <button type="submit" class="action-button delete-button">Удалить</button>
                 </form>
                 <a th:href="@{/contents/{directoryId}(directoryId=${dir.id})}" class="action-button">Открыть</a>
-                <!-- Скачать архив директории -->
-                <a th:href="@{/contents/download/zip/{directoryId}(directoryId=${dir.id})}"
-                   class="action-button generate-link-button">
-                    Скачать архив
-                </a>
+                <!-- Сгенерировать ссылку для директории -->
+                <form th:action="@{/generateLinkDirectory/{directoryId}(directoryId=${dir.id})}" method="post">
+                    <button type="submit" class="button success">Сгенерировать ссылку</button>
+                </form>
             </div>
         </li>
     </ul>

@@ -30,6 +30,8 @@ public class Directory {
     @Column(nullable = false)
     private String s3Path;
 
+
+
     @Column
     private boolean isActive;
     // Префикс директории в S3
