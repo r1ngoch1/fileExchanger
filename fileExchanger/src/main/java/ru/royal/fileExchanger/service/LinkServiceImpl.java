@@ -82,8 +82,8 @@ public class LinkServiceImpl implements LinkService{
                     .orElseThrow(() -> new IllegalArgumentException("Файл не найден"));
             link.setFile(file);
         }
-
-        return linkRepository.save(link);
+        linkRepository.save(link);
+        return link ;
     }
 
     @Override

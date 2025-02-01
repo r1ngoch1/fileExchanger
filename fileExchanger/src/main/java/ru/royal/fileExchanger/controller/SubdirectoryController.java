@@ -43,7 +43,6 @@ public class SubdirectoryController {
         // Получаем содержимое текущей директории
         List<File> files = fileService.getFilesInDirectory(directoryId);
         List<Directory> subdirectories = directoryService.getSubdirectories(directoryId);
-        System.out.println("Directories: " + subdirectories);
 
         model.addAttribute("directory", directory); // Текущая директория
         model.addAttribute("files", files); // Файлы внутри директории

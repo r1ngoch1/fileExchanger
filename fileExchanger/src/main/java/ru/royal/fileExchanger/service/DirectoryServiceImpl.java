@@ -124,18 +124,17 @@ public class DirectoryServiceImpl implements DirectoryService {
                         .bucket(bucketName)
                         .key(s3Object.key())
                         .build());
-                System.out.println("Удалён объект: " + s3Object.key());
             }
 
-            System.out.println("Директория удалена из S3: " + s3Key);
         } catch (Exception e) {
             System.err.println("Ошибка при удалении директории: " + s3Key + ", " + e.getMessage());
         }
+        List<Link> links = directoryRepository.findLinksByDirectoryId(directoryId);
+        for (Link link : links) linkRepository.delete(link);
 
         List<File> files = directory.getFiles();
         for (File file : files) fileRepository.delete(file);
-        List<Link> links = directoryRepository.findLinksByDirectoryId(directoryId);
-        for (Link link : links) linkRepository.delete(link);
+
 
         directory.setActive(false);
         directoryRepository.save(directory);
@@ -154,7 +153,6 @@ public class DirectoryServiceImpl implements DirectoryService {
         try (FileOutputStream fos = new FileOutputStream(outputZipPath);
              ZipOutputStream zipOut = new ZipOutputStream(fos)) {
 
-            System.out.println("Создание архива для директории: " + directoryPath);
 
             // Получаем список всех объектов с указанным префиксом
             ListObjectsV2Request listRequest = ListObjectsV2Request.builder()
@@ -163,8 +161,6 @@ public class DirectoryServiceImpl implements DirectoryService {
                     .build();
 
             ListObjectsV2Response listResponse = s3Client.listObjectsV2(listRequest);
-
-            System.out.println("Найдено объектов в директории: " + listResponse.contents().size());
 
 
             for (S3Object s3Object : listResponse.contents()) {
@@ -191,12 +187,9 @@ public class DirectoryServiceImpl implements DirectoryService {
                 zipOut.write(outputStream.toByteArray());
                 zipOut.closeEntry();
 
-                System.out.println("Файл добавлен в архив: " + originalFileName);
             }
 
-            System.out.println("Архив создан: " + outputZipPath);
         } catch (Exception e) {
-            System.err.println("Ошибка при создании архива: " + e.getMessage());
             e.printStackTrace();
         }
     }

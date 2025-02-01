@@ -24,7 +24,7 @@ public class Config {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/registration","/login","/forgot-password","/password/reset/**").permitAll()
+                .requestMatchers("/registration","/login","/forgot-password","/password/reset/**", "/monitoring").permitAll()
                         .requestMatchers("swagger-ui/index.html").hasRole("USER")
                         .requestMatchers("/api/v1/files/**").hasRole("USER")
                 .anyRequest().authenticated())
@@ -39,4 +39,6 @@ public class Config {
                         .permitAll());
         return httpSecurity.build();
     }
+
+
 }

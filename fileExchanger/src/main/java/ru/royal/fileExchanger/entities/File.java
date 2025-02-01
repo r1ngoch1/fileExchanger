@@ -2,7 +2,6 @@ package ru.royal.fileExchanger.entities;
 
 import jakarta.persistence.*;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**

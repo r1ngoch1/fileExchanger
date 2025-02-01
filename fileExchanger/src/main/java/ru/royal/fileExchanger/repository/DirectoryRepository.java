@@ -15,8 +15,6 @@ import java.util.Optional;
 
 @RepositoryRestResource
 public interface DirectoryRepository extends CrudRepository<Directory, Long> {
-    Directory findById(long id);
-
     @Query("select f from File f where f.directory.id = :directoryId and f.isActive=true")
     List<File> findAllByDirectoryId(Long directoryId);
 

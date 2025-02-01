@@ -102,8 +102,6 @@ public class UserController {
 
             model.addAttribute("message", "На указанный email отправлено письмо с инструкцией по восстановлению пароля.");
         } catch (Exception e) {
-            // Логирование ошибки
-            System.err.println("Ошибка при отправке письма для восстановления пароля: " + e.getMessage());
             e.printStackTrace();
 
             model.addAttribute("message", "Ошибка при отправке письма для восстановления пароля.");
@@ -114,7 +112,7 @@ public class UserController {
     @GetMapping("/password/reset/confirm")
     public String showResetPasswordForm(@RequestParam("token") String token, Model model) {
         model.addAttribute("token", token);
-        return "changePasswordAfterForgot"; // Страница для ввода нового пароля
+        return "changePasswordAfterForgot";
     }
 
     @PostMapping("/password/reset/confirm")
@@ -129,7 +127,7 @@ public class UserController {
         try {
             userService.resetPassword(token, newPassword);
             model.addAttribute("message", "Пароль успешно изменен.");
-            return "login"; // Перенаправление на страницу входа
+            return "login";
         } catch (Exception e) {
             model.addAttribute("message", "Ошибка при сбросе пароля.");
             return "changePasswordAfterForgot";

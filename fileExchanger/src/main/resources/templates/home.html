@@ -137,7 +137,7 @@
         <li th:each="file : ${files}" class="file-item">
             <span>
                 <strong th:text="${file.fileName}">Имя файла</strong> —
-                <span th:text="${file.fileSize} + ' MB'">Размер файла</span>
+                <span th:text="${file.fileSize} + ' KB'">Размер файла</span>
             </span>
             <div class="file-actions">
                 <!-- Удалить файл -->

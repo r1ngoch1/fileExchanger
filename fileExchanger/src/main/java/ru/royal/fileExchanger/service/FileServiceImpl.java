@@ -35,7 +35,7 @@ import static ru.royal.fileExchanger.Utils.extractKeyFromUrl;
 
 
 @Service
-public class FileServiceImpl implements FileService{
+public class  FileServiceImpl implements FileService{
 
     private final FileRepository fileRepository;
     private final LinkRepository linkRepository;
@@ -82,8 +82,13 @@ public class FileServiceImpl implements FileService{
                     PutObjectRequest.builder()
                             .bucket(bucketName)
                             .key(s3Key)
+                            .contentType(file.getContentType()) // Добавляем тип контента
+                            .contentLength(file.getSize())      // Добавляем размер файла
                             .build(),
-                    software.amazon.awssdk.core.sync.RequestBody.fromBytes(file.getBytes())
+                    software.amazon.awssdk.core.sync.RequestBody.fromInputStream(
+                            file.getInputStream(),    // Используем InputStream вместо getBytes()
+                            file.getSize()
+                    )
             );
             System.out.println("Файл загружен в S3: " + s3Key);
 
@@ -91,7 +96,7 @@ public class FileServiceImpl implements FileService{
             File fileBd = new File();
             fileBd.setUploadedAt(Timestamp.valueOf(LocalDateTime.now()));
             fileBd.setStoragePath(s3Key);
-            fileBd.setFileSize(file.getSize());
+            fileBd.setFileSize(file.getSize()/1024);
             fileBd.setFileName(file.getOriginalFilename());
             fileBd.setFileType(getFileExtension(Objects.requireNonNull(file.getOriginalFilename())));
             fileBd.setUser(securityUtils.getCurrentUser());
