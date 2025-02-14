@@ -49,6 +49,18 @@ public class LinkServiceImpl implements LinkService{
     }
 
     @Override
+    public void updateAllActiveByDirectory(Directory directory) {
+
+        List<Link> links = linkRepository.findByDirectory(directory);
+        for(Link link : links) {
+            link.setIsActive(false);
+            linkRepository.save(link);
+        }
+    }
+
+
+
+    @Override
     public void deleteAllByFilename(String filename) {
         List<Link> links = linkRepository.findByFileName(filename);
         linkRepository.deleteAll(links);
@@ -76,13 +88,19 @@ public class LinkServiceImpl implements LinkService{
             Directory directory = directoryRepository.findById(objectId)
                     .orElseThrow(() -> new IllegalArgumentException("Директория не найдена"));
             link.setDirectory(directory);
+            System.out.println("Файл перед сохранением: " + directory);
         } else {
             // Для файла
             File file = fileRepository.findById(objectId)
                     .orElseThrow(() -> new IllegalArgumentException("Файл не найден"));
             link.setFile(file);
+            System.out.println("Файл перед сохранением: " + file);
         }
-        linkRepository.save(link);
+
+        System.out.println("Ссылка перед сохранением: " + link);
+
+        System.out.println("Создаётся ссылка: " + linkHash + " для " + (isDirectory ? "директории" : "файла"));
+        linkRepository.saveAndFlush(link);
         return link ;
     }
 

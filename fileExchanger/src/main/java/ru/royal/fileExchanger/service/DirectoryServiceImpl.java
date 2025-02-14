@@ -36,18 +36,22 @@ public class DirectoryServiceImpl implements DirectoryService {
     private final FileRepository fileRepository;
     private final S3Client s3Client;
     private final LinkRepository linkRepository;
+    private final FileService fileService;
 
     private final String bucketName = "fileexchanger";
+    private final LinkService linkService;
 
 
     @Autowired
     public DirectoryServiceImpl(DirectoryRepository directoryRepository, SecurityUtils securityUtils, FileRepository fileRepository
-    , S3Client s3Client, LinkRepository linkRepository) {
+    , S3Client s3Client, LinkRepository linkRepository, LinkService linkService, FileService fileService) {
         this.directoryRepository = directoryRepository;
         this.securityUtils = securityUtils;
         this.fileRepository = fileRepository;
         this.s3Client = s3Client;
         this.linkRepository = linkRepository;
+        this.linkService = linkService;
+        this.fileService = fileService;
     }
 
     @Override
@@ -109,6 +113,11 @@ public class DirectoryServiceImpl implements DirectoryService {
         Directory directory = directoryRepository.findById(directoryId)
                 .orElseThrow(() -> new RuntimeException("Директория не найдена" + directoryId));
 
+        List<Directory> subDirectories = directoryRepository.findSubdirectoriesByDirectoryId(directoryId);
+        for (Directory subDir : subDirectories) {
+            deleteDirectory(subDir.getId()); // Рекурсивный вызов
+        }
+
         String s3Key = directory.getS3Path();
         try {
             // Удаляем все объекты с данным префиксом
@@ -129,12 +138,10 @@ public class DirectoryServiceImpl implements DirectoryService {
         } catch (Exception e) {
             System.err.println("Ошибка при удалении директории: " + s3Key + ", " + e.getMessage());
         }
-        List<Link> links = directoryRepository.findLinksByDirectoryId(directoryId);
-        for (Link link : links) linkRepository.delete(link);
+        linkService.updateAllActiveByDirectory(directory);
 
         List<File> files = directory.getFiles();
-        for (File file : files) fileRepository.delete(file);
-
+        for (File file : files) fileService.deleteFile(file.getId());
 
         directory.setActive(false);
         directoryRepository.save(directory);

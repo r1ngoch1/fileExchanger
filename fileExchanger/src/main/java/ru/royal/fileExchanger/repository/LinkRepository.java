@@ -69,8 +69,7 @@ public interface LinkRepository extends CrudRepository<Link, Long> {
     Optional<User> findUserByLinkId(@Param("id") Long id);
 
 
+    List<Link> findByDirectory(Directory directory);
 
-
-
-
+    void saveAndFlush(Link link);
 }

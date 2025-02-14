@@ -1,5 +1,6 @@
 package ru.royal.fileExchanger.service;
 
+import ru.royal.fileExchanger.entities.Directory;
 import ru.royal.fileExchanger.entities.File;
 import ru.royal.fileExchanger.entities.Link;
 
@@ -14,11 +15,14 @@ public interface LinkService {
 
     void updateAllActiveByFile(File file);
 
-    /**
-     *
-     * @param filename
-     * удаляет все ссылки приндлежащие файлу по имени файла
-     */
+    void updateAllActiveByDirectory(Directory directory);
+
+
+        /**
+         *
+         * @param filename
+         * удаляет все ссылки приндлежащие файлу по имени файла
+         */
     void deleteAllByFilename(String filename);
 
     /**
