@@ -27,7 +27,7 @@ public interface DirectoryRepository extends CrudRepository<Directory, Long> {
     List<Directory> findDirectoriesByUser(@Param("user") User user);
 
     @Query("SELECT d FROM Directory d " +
-            "WHERE d.user = :user AND d.parentDirectory.id = 0 AND d.isActive = true")
+            "WHERE d.user = :user AND d.parentDirectory.name = 'ROOT' AND d.isActive = true")
     List<Directory> findRootDirectories(User user);
 
 
@@ -35,4 +35,8 @@ public interface DirectoryRepository extends CrudRepository<Directory, Long> {
 
     @Query("select l from Link l where l.directory.id = :directoryId")
     List<Link> findLinksByDirectoryId(Long directoryId);
+
+    Optional<Directory> findByIsRoot(boolean isRoot);
+
+
 }

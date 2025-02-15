@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void save(User user) throws Exception {
         User userFromDb = userRepository.findByUsername(user.getUsername());
-        if(userFromDb!=null){
+        if (userFromDb != null) {
             throw new Exception("user exist");
         }
         user.setUserRole(Collections.singleton(Role.USER));
@@ -84,13 +84,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
-    public Collection<GrantedAuthority> mapRoles(Set<Role> roles){
+    public Collection<GrantedAuthority> mapRoles(Set<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
                 .collect(Collectors.toList());
     }
+
     @Override
     public boolean isUpdatePassword(User user, String password, String newPassword, String confirmPassword) {
-        if(passwordEncoder.matches(password, user.getPassword()) && newPassword.equals(confirmPassword)) {
+        if (passwordEncoder.matches(password, user.getPassword()) && newPassword.equals(confirmPassword)) {
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
             return true;
@@ -124,7 +125,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
         User user = userRepository.findByVerificationToken(token);
-        if(user!= null){
+        if (user != null) {
             user.setEmailVerified(true);
             user.setVerificationToken(null);
             userRepository.save(user);
@@ -142,10 +143,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String verificationLink = "http://localhost:8080/verify?token=" + token;
         emailService.sendVerificationEmail(user.getEmail(), verificationLink);
     }
+
     @Override
-    public User findByEmail(String email){
+    public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     @Override
     public void createPasswordResetToken(String email, String token) throws Exception {
         User user = userRepository.findByEmail(email);
@@ -172,19 +175,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         long expirationTime = 24 * 60 * 60 * 1000; // 24 часа
         return System.currentTimeMillis() - tokenCreationDate.getTime() > expirationTime;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

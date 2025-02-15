@@ -7,15 +7,12 @@ import org.springframework.stereotype.Service;
 import ru.royal.fileExchanger.SecurityUtils;
 import ru.royal.fileExchanger.entities.Directory;
 import ru.royal.fileExchanger.entities.File;
-import ru.royal.fileExchanger.entities.Link;
 import ru.royal.fileExchanger.entities.User;
 import ru.royal.fileExchanger.repository.DirectoryRepository;
 import ru.royal.fileExchanger.repository.FileRepository;
 import ru.royal.fileExchanger.repository.LinkRepository;
-import ru.royal.fileExchanger.repository.UserRepository;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.*;
 
@@ -23,8 +20,8 @@ import software.amazon.awssdk.services.s3.model.*;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -44,7 +41,7 @@ public class DirectoryServiceImpl implements DirectoryService {
 
     @Autowired
     public DirectoryServiceImpl(DirectoryRepository directoryRepository, SecurityUtils securityUtils, FileRepository fileRepository
-    , S3Client s3Client, LinkRepository linkRepository, LinkService linkService, FileService fileService) {
+            , S3Client s3Client, LinkRepository linkRepository, LinkService linkService, FileService fileService) {
         this.directoryRepository = directoryRepository;
         this.securityUtils = securityUtils;
         this.fileRepository = fileRepository;
@@ -65,7 +62,7 @@ public class DirectoryServiceImpl implements DirectoryService {
         }
 
         String s3Path;
-        if (parentDirectoryId != 0L) {
+        if (parentDirectoryId != 1L) {
             s3Path = parentDirectory.getS3Path() + "/" + name; // Добавляем в путь имя директории
         } else {
             assert parentDirectory != null;
@@ -81,6 +78,7 @@ public class DirectoryServiceImpl implements DirectoryService {
 
         return directoryRepository.save(newDirectory);
     }
+
 
     @Override
     public List<Directory> getSubdirectories(Long directoryId) {
@@ -108,7 +106,7 @@ public class DirectoryServiceImpl implements DirectoryService {
 
     @Override
     @Transactional
-    public void deleteDirectory(Long directoryId){
+    public void deleteDirectory(Long directoryId) {
 
         Directory directory = directoryRepository.findById(directoryId)
                 .orElseThrow(() -> new RuntimeException("Директория не найдена" + directoryId));
@@ -199,6 +197,10 @@ public class DirectoryServiceImpl implements DirectoryService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Optional<Directory> getRootDirectory() {
+        return directoryRepository.findByIsRoot(true);
     }
 
 

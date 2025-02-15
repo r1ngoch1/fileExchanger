@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class LinkServiceImpl implements LinkService{
+public class LinkServiceImpl implements LinkService {
     private final LinkRepository linkRepository;
     private final FileRepository fileRepository;
     private final DirectoryRepository directoryRepository;
 
     @Autowired
-    public LinkServiceImpl(LinkRepository linkRepository,FileRepository fileRepository,DirectoryRepository directoryRepository) {
+    public LinkServiceImpl(LinkRepository linkRepository, FileRepository fileRepository, DirectoryRepository directoryRepository) {
         this.linkRepository = linkRepository;
         this.fileRepository = fileRepository;
         this.directoryRepository = directoryRepository;
@@ -32,7 +32,7 @@ public class LinkServiceImpl implements LinkService{
     public void updateAllActiveByUsername(String username) {
 
         List<Link> links = linkRepository.findByUsername(username);
-        for(Link link : links) {
+        for (Link link : links) {
             link.setIsActive(false);
             linkRepository.save(link);
         }
@@ -42,7 +42,7 @@ public class LinkServiceImpl implements LinkService{
     public void updateAllActiveByFile(File file) {
 
         List<Link> links = linkRepository.findByFileId(file.getId());
-        for(Link link : links) {
+        for (Link link : links) {
             link.setIsActive(false);
             linkRepository.save(link);
         }
@@ -52,12 +52,11 @@ public class LinkServiceImpl implements LinkService{
     public void updateAllActiveByDirectory(Directory directory) {
 
         List<Link> links = linkRepository.findByDirectory(directory);
-        for(Link link : links) {
+        for (Link link : links) {
             link.setIsActive(false);
             linkRepository.save(link);
         }
     }
-
 
 
     @Override
@@ -67,7 +66,7 @@ public class LinkServiceImpl implements LinkService{
     }
 
     @Override
-    public void deleteByFileId(Long fileId){
+    public void deleteByFileId(Long fileId) {
         List<Link> links = linkRepository.findByFileId(fileId);
         linkRepository.deleteAll(links);
     }
@@ -100,8 +99,8 @@ public class LinkServiceImpl implements LinkService{
         System.out.println("Ссылка перед сохранением: " + link);
 
         System.out.println("Создаётся ссылка: " + linkHash + " для " + (isDirectory ? "директории" : "файла"));
-        linkRepository.saveAndFlush(link);
-        return link ;
+        linkRepository.save(link);
+        return link;
     }
 
     @Override
@@ -127,8 +126,9 @@ public class LinkServiceImpl implements LinkService{
 
         return linkRepository.findFileByLinkHash(hash).getStoragePath(); // Пример: файл содержит поле с ключом S3
     }
+
     @Override
-    public File getFileByLinkHash(String hash){
+    public File getFileByLinkHash(String hash) {
         return linkRepository.findFileByLinkHash(hash);
     }
 

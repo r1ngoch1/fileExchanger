@@ -15,10 +15,6 @@ import ru.royal.fileExchanger.service.DirectoryService;
 import ru.royal.fileExchanger.service.FileService;
 
 
-
-
-
-
 import java.io.IOException;
 import java.util.List;
 
@@ -82,11 +78,6 @@ public class SubdirectoryController {
         }
         return "redirect:/home";  // Перенаправляем на главную страницу
     }
-
-
-
-
-
 
 
 }

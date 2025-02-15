@@ -11,18 +11,14 @@ public interface ReportRepository extends CrudRepository<Report, Long> {
 
 
     /**
-     *
-     * @param id
-     * возвращает контент по id отчета
+     * @param id возвращает контент по id отчета
      * @return content
      */
     @Query("select r.content from Report r WHERE r.id =:id")
     String getContentById(Long id);
 
     /**
-     *
-     * @param id
-     * возвращает статут отчета по его id
+     * @param id возвращает статут отчета по его id
      * @return status
      */
     @Query("select r.status from Report r where r.id=:id")

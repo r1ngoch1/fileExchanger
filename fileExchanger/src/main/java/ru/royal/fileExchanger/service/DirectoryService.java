@@ -5,6 +5,7 @@ import ru.royal.fileExchanger.entities.User;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface DirectoryService {
 
@@ -20,7 +21,9 @@ public interface DirectoryService {
     List<Directory> getRootDirectoriesByUser();
 
     void deleteDirectory(Long directoryId);
-    void downloadDirectoryAsZip(String linkHash, String outputZipPath) throws IOException ;
 
+    void downloadDirectoryAsZip(String linkHash, String outputZipPath) throws IOException;
+
+    Optional<Directory> getRootDirectory();
 
 }

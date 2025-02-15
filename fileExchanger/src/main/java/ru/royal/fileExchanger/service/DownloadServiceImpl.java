@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Service
-public class DownloadServiceImpl implements DownloadService{
+public class DownloadServiceImpl implements DownloadService {
 
     private final DownloadRepository downloadRepository;
     private final LinkRepository linkRepository;

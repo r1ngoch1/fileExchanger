@@ -51,7 +51,7 @@ public class DownloadController {
         String fileName = file.getFileName();
         String encodedFileName = UriUtils.encodePath(fileName, StandardCharsets.UTF_8);
 
-        return downloadFileUtil(file, fileResource,encodedFileName);
+        return downloadFileUtil(file, fileResource, encodedFileName);
 
     }
 
@@ -72,10 +72,8 @@ public class DownloadController {
 
         Resource resource = new org.springframework.core.io.FileSystemResource(zipFile);
 
-        return downloadDirectory(zipFile,resource);
+        return downloadDirectory(zipFile, resource);
     }
-    
-
 
 
 }

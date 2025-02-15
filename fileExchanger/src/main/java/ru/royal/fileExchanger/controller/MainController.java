@@ -29,36 +29,25 @@ public class MainController {
 
 
     @GetMapping("/registration")
-    public String getRegistration(){
+    public String getRegistration() {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String adduser(User user, Model model)
-    {
-        try
-        {
+    public String adduser(User user, Model model) {
+        try {
             userService.save(user);
             return "redirect:/login";
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             model.addAttribute("message", "User exists");
             return "registration";
         }
     }
+
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "login";
     }
-
-
-
-
-
-
-
-
 
 
 }

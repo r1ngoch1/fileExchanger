@@ -32,7 +32,6 @@ public class RootDirectoryController {
         List<File> files = fileService.getFilesInRootDirectory();
 
 
-
         model.addAttribute("directories", directories);
         model.addAttribute("files", files);
 
@@ -41,9 +40,12 @@ public class RootDirectoryController {
 
     @PostMapping("/create")
     public String createRootDirectory(@RequestParam String name) {
-        directoryService.createDirectory(name, 0L); // null указывает, что это корневая директория
+        Directory rootDirectory = directoryService.getRootDirectory().orElseThrow();
+
+        directoryService.createDirectory(name, rootDirectory.getId()); // null указывает, что это корневая директория
         return "redirect:/home";
     }
+
     @GetMapping("/create")
     public String createRootDirectory() {
         return "createDirectory";

@@ -24,7 +24,7 @@ public class ReportController {
     public ResponseEntity<String> getReportFile(@PathVariable Long reportId) {
         String content = reportService.getContent(reportId);
         ReportStatus status = reportService.getReportStatus(reportId);
-        switch (status){
+        switch (status) {
             case ERROR -> {
                 return ResponseEntity.ok("Ошибка при формировании отчета");
             }
@@ -42,7 +42,7 @@ public class ReportController {
     }
 
     @GetMapping("/create")
-    public Long createReport(){
+    public Long createReport() {
         Long reportId = reportService.saveReport();
         reportService.generateReportAsync(reportId);
         return reportId;

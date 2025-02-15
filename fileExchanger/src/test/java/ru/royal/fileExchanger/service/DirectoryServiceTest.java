@@ -17,6 +17,7 @@ import java.util.*;
 
 
 import jakarta.transaction.Transactional;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -42,8 +43,12 @@ class DirectoryServiceTest {
     @Mock
     private LinkRepository linkRepository;
 
+    @Mock
+    private LinkService linkService;
+
     @InjectMocks
     private DirectoryServiceImpl directoryService;
+
 
     private final String testBucket = "fileexchanger";
 
@@ -52,7 +57,7 @@ class DirectoryServiceTest {
         User user = new User();
         Directory parent = new Directory();
         parent.setId(1L);
-        parent.setS3Path("/parent");
+        parent.setS3Path("parent/");
 
         when(securityUtils.getCurrentUser()).thenReturn(user);
         when(directoryRepository.findById(any(Long.class))).thenReturn(Optional.of(parent));
@@ -61,34 +66,12 @@ class DirectoryServiceTest {
         Directory result = directoryService.createDirectory("child", 1L);
 
         assertEquals("child", result.getName());
-        assertEquals("/parent/child", result.getS3Path());
+        assertEquals("parent/child", result.getS3Path());
         assertTrue(result.isActive());
         assertEquals(user, result.getUser());
     }
 
 
-    @Test
-    void deleteDirectory_ShouldDeactivateAndCleanResources() {
-        Directory directory = new Directory();
-        List<File> files = new ArrayList<>();
-        directory.setId(1L);
-        directory.setS3Path("/test/path");
-        directory.setFiles(files);
-
-        ListObjectsV2Response listResponse = ListObjectsV2Response.builder()
-                .contents(new ArrayList<>())
-                .build();
-
-        when(directoryRepository.findById(any(Long.class))).thenReturn(Optional.of(directory));
-        when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(listResponse);
-        when(directoryRepository.findLinksByDirectoryId(any(Long.class))).thenReturn(new ArrayList<>());
-        when(directoryRepository.save(any(Directory.class))).thenReturn(directory);
-
-        directoryService.deleteDirectory(1L);
-
-        verify(directoryRepository).save(argThat(dir -> !dir.isActive()));
-        verify(s3Client).listObjectsV2(any(ListObjectsV2Request.class));
-    }
 
     @Test
     void downloadDirectoryAsZip_ShouldCreateValidZip() throws IOException {

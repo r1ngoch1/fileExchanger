@@ -7,13 +7,13 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 import ru.royal.fileExchanger.entities.Role;
 import ru.royal.fileExchanger.entities.User;
+
 import java.util.List;
 
 @RepositoryRestResource
-public interface UserRepository extends CrudRepository<User,Long> {
+public interface UserRepository extends CrudRepository<User, Long> {
 
     /**
-     *
      * @param username
      * @param password
      * @return возвращает пользователя по логину и паролю
@@ -21,23 +21,18 @@ public interface UserRepository extends CrudRepository<User,Long> {
     User findByUsernameAndPassword(String username, String password);
 
     /**
-     *
      * @param username
      * @return возвращает пользователя по логину
      */
     User findByUsername(String username);
 
     /**
-     *
-     * @param username
-     * удаляет пользователя
+     * @param username удаляет пользователя
      */
     void deleteByUsername(String username);
 
     /**
-     *
-     * @param role
-     * возвращает по выбранной роли количество пользователей
+     * @param role возвращает по выбранной роли количество пользователей
      * @return count(role)
      */
     @Query("select count(u) from User u where :role MEMBER OF u.userRole")

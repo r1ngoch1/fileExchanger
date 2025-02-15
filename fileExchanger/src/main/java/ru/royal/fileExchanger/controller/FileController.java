@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 
 import java.io.IOException;
 import java.util.List;
+
 @CrossOrigin(origins = "*")
 @Controller
 public class FileController {
@@ -36,7 +37,7 @@ public class FileController {
 
 
     @GetMapping("/home/upload")
-    public String getUpload(){
+    public String getUpload() {
         return "upload";
     }
 
@@ -58,21 +59,10 @@ public class FileController {
     }
 
     @DeleteMapping("/deleteFile/{fileId}")
-    public String deleteFile(@PathVariable("fileId") Long fileId){
+    public String deleteFile(@PathVariable("fileId") Long fileId) {
         fileService.deleteFile(fileId);
         return "redirect:/home";
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

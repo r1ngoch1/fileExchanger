@@ -11,6 +11,6 @@ public class DirectoryContents {
         this.subdirectories = subdirectories;
     }
 
-    // Геттеры и сеттеры
+
 }
 

@@ -16,10 +16,15 @@ public interface UserService {
     boolean isUpdatePassword(User user, String password, String newPassword, String confirmPassword);
 
     boolean verifyEmail(String token);
+
     void updateEmail(User user, String newEmail) throws Exception;
+
     void generateVerificationToken(User user);
+
     User findByEmail(String email);
+
     void createPasswordResetToken(String email, String token) throws Exception;
+
     void resetPassword(String token, String newPassword) throws Exception;
 
 }

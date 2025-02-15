@@ -24,7 +24,6 @@ public class Download {
     private Timestamp downloadAt;
 
 
-
     public Long getId() {
         return id;
     }

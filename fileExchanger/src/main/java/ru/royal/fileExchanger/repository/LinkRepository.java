@@ -18,7 +18,6 @@ import java.util.Optional;
 public interface LinkRepository extends CrudRepository<Link, Long> {
 
     /**
-     *
      * @param fileName
      * @return список ссылок с заданным именем файла
      */
@@ -26,7 +25,6 @@ public interface LinkRepository extends CrudRepository<Link, Long> {
     List<Link> findByFileName(String fileName);
 
     /**
-     *
      * @param username
      * @return возвращает список ссылок по по логину
      */
@@ -34,9 +32,7 @@ public interface LinkRepository extends CrudRepository<Link, Long> {
     List<Link> findByUsername(String username);
 
     /**
-     *
-     * @param fileId
-     * возвращает все ссылки которые привязаны к файлу
+     * @param fileId возвращает все ссылки которые привязаны к файлу
      * @return список линков
      */
 
@@ -44,18 +40,14 @@ public interface LinkRepository extends CrudRepository<Link, Long> {
     List<Link> findByFileId(Long fileId);
 
     /**
-     *
-     * @param linkHash
-     * возвращает ссылку по его хэшкоду
+     * @param linkHash возвращает ссылку по его хэшкоду
      * @return Link
      */
 
     Link findLinkByLinkHash(String linkHash);
 
     /**
-     *
-     * @param linkHash
-     * возвращает файл по хэшкоду ссылки
+     * @param linkHash возвращает файл по хэшкоду ссылки
      * @return File
      */
 
@@ -72,4 +64,6 @@ public interface LinkRepository extends CrudRepository<Link, Long> {
     List<Link> findByDirectory(Directory directory);
 
     void saveAndFlush(Link link);
+
+    List<Link> findLinksByDirectoryId(Long l);
 }

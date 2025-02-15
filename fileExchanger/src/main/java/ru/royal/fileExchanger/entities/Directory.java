@@ -30,12 +30,19 @@ public class Directory {
     @Column(nullable = false)
     private String s3Path;
 
-
+    @Column(name = "is_root", nullable = false, columnDefinition = "boolean default false") // Явно указываем имя колонки
+    private boolean isRoot;
 
     @Column
     private boolean isActive;
-    // Префикс директории в S3
 
+    public boolean isRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(boolean root) {
+        isRoot = root;
+    }
 
     public Long getId() {
         return id;

@@ -11,8 +11,8 @@ public class EmailService {
     private final JavaMailSender mailSender;
 
     @Autowired
-    public EmailService(JavaMailSender mailSender){
-        this.mailSender =mailSender;
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
     }
 
     /**
@@ -46,6 +46,7 @@ public class EmailService {
 
         mailSender.send(mailMessage);
     }
+
     public void sendPasswordResetEmail(String email, String resetLink) {
         String subject = "Восстановление пароля";
         String message = "Для сброса пароля перейдите по следующей ссылке: " + resetLink;

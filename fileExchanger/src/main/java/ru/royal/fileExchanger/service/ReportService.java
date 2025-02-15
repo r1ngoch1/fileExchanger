@@ -7,7 +7,10 @@ import java.util.concurrent.CompletableFuture;
 
 public interface ReportService {
     String getContent(Long id);
+
     Long saveReport();
+
     public CompletableFuture<Report> generateReportAsync(Long reportId);
+
     ReportStatus getReportStatus(Long reportId);
 }

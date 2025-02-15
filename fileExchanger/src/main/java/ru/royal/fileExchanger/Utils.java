@@ -54,7 +54,7 @@ public class Utils {
         return header;
     }
 
-    public static ResponseEntity<Resource> downloadDirectory(java.io.File zipFile,Resource resource) {
+    public static ResponseEntity<Resource> downloadDirectory(java.io.File zipFile, Resource resource) {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipFile.getName() + "\"")
                 .contentLength(zipFile.length())

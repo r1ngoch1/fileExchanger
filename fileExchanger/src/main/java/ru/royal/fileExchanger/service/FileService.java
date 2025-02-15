@@ -14,59 +14,45 @@ import java.util.List;
 
 public interface FileService {
     /**
-     *
-     * @param fileId
-     * удаляет файла по его id
+     * @param fileId удаляет файла по его id
      */
     void deleteFile(Long fileId);
 
     /**
      * удаляет все файлы по имени пользователя
+     *
      * @param username
      */
     void updateActivityFilesByUser(String username);
 
     /**
-     *
-     * @param username
-     * возвращает список всех файлов у пользователя
+     * @param username возвращает список всех файлов у пользователя
      * @return список файлов
      */
     List<File> findByUser(String username);
 
     /**
-     *
-     * @param file
-     * производит загрузку файла
+     * @param file производит загрузку файла
      * @return файл как сущность
      * @throws IOException
      */
     File uploadFile(MultipartFile file, Long directoryId) throws IOException;
 
     /**
-     *
-     * @param id
-     * возвращает файл по его id
+     * @param id возвращает файл по его id
      * @return
      */
     File findFileById(Long id);
 
     /**
-     *
-     * @param fileName
-     * возвращает ссылку по которой файл хранится в s3 хранилище, по имени файла
+     * @param fileName возвращает ссылку по которой файл хранится в s3 хранилище, по имени файла
      * @return url s3 storage
      */
     String generateFileUrl(String fileName);
 
 
-
-
-
     /**
-     *
-     * @param fileKey
-     * прозводит скачивание файла по ключу файла
+     * @param fileKey прозводит скачивание файла по ключу файла
      * @return
      */
     Resource downloadFile(String fileKey);

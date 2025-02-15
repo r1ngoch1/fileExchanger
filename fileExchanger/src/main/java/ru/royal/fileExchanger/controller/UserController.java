@@ -48,7 +48,7 @@ public class UserController {
                                  @RequestParam(required = false) String newPassword,
                                  @RequestParam(required = false) String confirmPassword) {
         User user = securityUtils.getCurrentUser();
-        if( userService.isUpdatePassword(user, currentPassword, newPassword, confirmPassword) ) {
+        if (userService.isUpdatePassword(user, currentPassword, newPassword, confirmPassword)) {
             return "redirect:/profile";
         } else {
             model.addAttribute("message", "Password does not match");
@@ -74,13 +74,12 @@ public class UserController {
     }
 
 
-
     @GetMapping("/verify")
-    public String verifyEmail(@RequestParam("token") String token, Model model){
-        if(userService.verifyEmail(token)){
+    public String verifyEmail(@RequestParam("token") String token, Model model) {
+        if (userService.verifyEmail(token)) {
             model.addAttribute("message", "Email успешно подтвержден!");
             return "redirect:/profile";
-        }else {
+        } else {
             model.addAttribute("message", "Неверный или истекший токен!");
             return "exceptionMessage";
         }
@@ -133,13 +132,6 @@ public class UserController {
             return "changePasswordAfterForgot";
         }
     }
-
-
-
-
-
-
-
 
 
 }

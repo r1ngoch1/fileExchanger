@@ -35,7 +35,7 @@ import static ru.royal.fileExchanger.Utils.extractKeyFromUrl;
 
 
 @Service
-public class  FileServiceImpl implements FileService{
+public class FileServiceImpl implements FileService {
 
     private final FileRepository fileRepository;
     private final LinkRepository linkRepository;
@@ -65,7 +65,8 @@ public class  FileServiceImpl implements FileService{
             // Если ID директории не указан, используем корневую директорию
             Directory directory = null;
             if (directoryId == null) {
-                directoryId = 0L; // ID виртуальной корневой директории
+                Directory rootDirectory = directoryRepository.findByIsRoot(true).orElseThrow();
+                directoryId = rootDirectory.getId() ; // ID виртуальной корневой директории
             }
 
             directory = directoryRepository.findById(directoryId)
@@ -75,7 +76,7 @@ public class  FileServiceImpl implements FileService{
             String uniqueFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
             // Если файл привязан к директории, добавляем имя директории к пути
-            String s3Key = directory.getS3Path() +"/"+ uniqueFileName;
+            String s3Key = directory.getS3Path() + "/" + uniqueFileName;
 
             // Загрузка файла в S3
             s3Client.putObject(
@@ -96,7 +97,7 @@ public class  FileServiceImpl implements FileService{
             File fileBd = new File();
             fileBd.setUploadedAt(Timestamp.valueOf(LocalDateTime.now()));
             fileBd.setStoragePath(s3Key);
-            fileBd.setFileSize(file.getSize()/1024);
+            fileBd.setFileSize(file.getSize() / 1024);
             fileBd.setFileName(file.getOriginalFilename());
             fileBd.setFileType(getFileExtension(Objects.requireNonNull(file.getOriginalFilename())));
             fileBd.setUser(securityUtils.getCurrentUser());
@@ -115,7 +116,6 @@ public class  FileServiceImpl implements FileService{
             throw new RuntimeException("Ошибка при загрузке файла", e);
         }
     }
-
 
 
     public String generateFileUrl(String fileName) {
@@ -183,7 +183,6 @@ public class  FileServiceImpl implements FileService{
     }
 
 
-
     @Override
     @Transactional
     public void updateActivityFilesByUser(String username) {
@@ -202,11 +201,9 @@ public class  FileServiceImpl implements FileService{
 
     @Override
     public List<File> getFilesInRootDirectory() {
-        User user =securityUtils.getCurrentUser();
+        User user = securityUtils.getCurrentUser();
         return fileRepository.findAllByUserAndDirectoryIsNull(user);
     }
-
-
 
 
     private String getFileExtension(String fileName) {
@@ -216,14 +213,6 @@ public class  FileServiceImpl implements FileService{
         }
         return "";
     }
-
-
-
-
-
-
-
-
 
 
 }

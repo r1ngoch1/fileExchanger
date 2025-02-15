@@ -17,6 +17,7 @@ public class SecurityUtils {
     public SecurityUtils(@Lazy UserService userService) {
         this.userService = userService;
     }
+
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
