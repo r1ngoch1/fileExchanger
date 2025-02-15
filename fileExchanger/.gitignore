@@ -37,7 +37,5 @@ build/
 *.env
 
 #properties
-src/main/resources/application.properties
 **/application.properties
-src/main/resources/application-test.properties
 **/application-test.properties
