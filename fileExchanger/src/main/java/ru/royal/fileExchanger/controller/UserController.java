@@ -96,7 +96,7 @@ public class UserController {
             String token = UUID.randomUUID().toString();
             userService.createPasswordResetToken(email, token);
 
-            String resetLink = "http://localhost:8080/password/reset/confirm?token=" + token;
+            String resetLink = "http://158.160.172.163:8080/password/reset/confirm?token=" + token;
             emailService.sendPasswordResetEmail(email, resetLink);
 
             model.addAttribute("message", "На указанный email отправлено письмо с инструкцией по восстановлению пароля.");

@@ -34,7 +34,7 @@ public class LinkController {
     @PostMapping("/generateLink/{fileId}")
     public String generateLink(@PathVariable Long fileId, Model model) {
         Link link = linkService.createLink(fileId, 1, false);
-        String generatedLink = "/download/" + link.getLinkHash();
+        String generatedLink = "http://158.160.172.163:8080"+  "/download/" + link.getLinkHash();
         model.addAttribute("generatedLink", generatedLink);
         return "generatedLinkPage";
     }
@@ -42,7 +42,7 @@ public class LinkController {
     @PostMapping("/generateLinkDirectory/{directoryId}")
     public String generateLinkForDirectory(@PathVariable Long directoryId, Model model) {
         Link link = linkService.createLink(directoryId, 1, true);
-        String generatedLink = "/downloadDirectory/" + link.getLinkHash();
+        String generatedLink = "http://158.160.172.163:8080" +"/downloadDirectory/" + link.getLinkHash();
         model.addAttribute("generatedLink", generatedLink);
         return "generatedLinkPage";
     }

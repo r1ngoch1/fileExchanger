@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         System.out.println("Email успешно обновлен для пользователя: " + user.getUsername());
 
         // Отправка email с подтверждением
-        String verificationLink = "http://localhost:8080/verify?token=" + token;
+        String verificationLink = "http://158.160.172.163:8080/verify?token=" + token;
         emailService.sendVerificationEmail(newEmail, verificationLink);
     }
 
@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setVerificationToken(token);
         userRepository.save(user);
         // Отправка email с ссылкой подтверждения
-        String verificationLink = "http://localhost:8080/verify?token=" + token;
+        String verificationLink = "http://158.160.172.163:8080/verify?token=" + token;
         emailService.sendVerificationEmail(user.getEmail(), verificationLink);
     }
 
